@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  kong:
+    image: kong:3.8
+
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /kong/declarative/kong.yml
+
+    volumes:
+      - ./kong/kong.yml:/kong/declarative/kong.yml
+
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+
+  user-service:
+    build: ./services/user-service
+    ports:
+      - "4001:3001"
+
+  product-service:
+    build: ./services/product-service
+    ports:
+      - "4002:3002"
+
+  postgres:
+    image: postgres:16
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: kongdb
+
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+
+    ports:
+      - "6379:6379"
