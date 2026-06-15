@@ -15,6 +15,13 @@ services:
       - "8000:8000"
       - "8001:8001"
 
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "4003:3003"
+    environment:
+      JWT_SECRET: my-super-secret-key
+
   user-service:
     build: ./services/user-service
     ports:
